@@ -1,77 +1,30 @@
 import random
-
+from hangman_art import spanzuratoare
 
 def afisare_cuvant(cuvant):
     print(" ".join(cuvant))
 
 
-with open('words.txt', 'r') as out:
-    words = [linie.strip() for linie in out]
-    random_word = random.choice(words)
+try:
+    with open('words.txt', 'r') as out:
+        words = [line.strip() for line in out if line.strip()]
+        if not words:
+            raise ValueError("Fișierul este gol.")
+except FileNotFoundError:
+    print("Eroare: Fișierul 'words.txt' nu a fost găsit.")
+    exit()
+except ValueError as e:
+    print(f"Eroare: {e}")
+    exit()
 
+
+random_word = random.choice(words)
 cuvant = ["_"] * len(random_word)
 incercari_ramase = 6
 litere_ghicite = 0
 
-spanzuratoare = [
-    '''
-     ------
-     |    |
-          |
-          |
-          |
-          |
-    ''',
-    '''
-     ------
-     |    |
-     O    |
-          |
-          |
-          |
-    ''',
-    '''
-     ------
-     |    |
-     O    |
-     |    |
-          |
-          |
-    ''',
-    '''
-     ------
-     |    |
-     O    |
-    /|    |
-          |
-          |
-    ''',
-    '''
-     ------
-     |    |
-     O    |
-    /|\\   |
-          |
-          |
-    ''',
-    '''
-     ------
-     |    |
-     O    |
-    /|\\   |
-    /     |
-          |
-    ''',
-    '''
-     ------
-     |    |
-     O    |
-    /|\\   |
-    / \\   |
-          |
-    '''
-]
 
+print(random_word)
 # Mesaj Salut
 print("\n" + "=" * 70)
 print("\t\t\t  !!! BUN VENIT LA HANGMAN !!!\n")
@@ -99,7 +52,7 @@ while incercari_ramase != 0:
         afisare_cuvant(cuvant)
 
     # WIN
-    if litere_ghicite == len(random_word):
+    if "".join(cuvant) == random_word:
         print("\n\n\t!!! FELICITĂRI, AI GHICIT CUVÂNTUL !!!")
         break
 # LOSE
